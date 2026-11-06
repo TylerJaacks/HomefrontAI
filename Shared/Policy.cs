@@ -1,10 +1,10 @@
-// HomefrontImitation shared code. HomefrontBots carries a copy (HomefrontBots\Imitation\): keep the two identical.
+// HomefrontAI shared code. HomefrontBots carries a copy (HomefrontBots\Imitation\): keep the two identical.
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 
-namespace HomefrontImitation;
+namespace HomefrontAI;
 
 /// <summary>The trained policy (policy.json, written by train\hfimitate.py): a small MLP from the
 /// <see cref="Features"/> vector to what a human did next. Heads: movement class (softmax over
@@ -42,7 +42,7 @@ public sealed class Policy
         using var doc = JsonDocument.Parse(json);
         var root = doc.RootElement;
         if (root.GetProperty("format").GetString() != Format)
-            throw new InvalidDataException("not a HomefrontImitation policy");
+            throw new InvalidDataException("not a HomefrontAI policy");
         var p = new Policy
         {
             Schema = root.GetProperty("schema").GetString() ?? "",

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
 using System.Text.Json;
-using HomefrontImitation;
+using HomefrontAI;
 
 // Harness synth <dir> [files]          scripted "players" on an open arena -> .hfrec files (real writer + features)
 // Harness check <policy.json> <parity.json>   C# forward pass == trainer's; the policy learned the script

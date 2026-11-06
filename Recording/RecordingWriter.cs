@@ -4,7 +4,7 @@ using System.IO;
 using System.Numerics;
 using System.Text;
 
-namespace HomefrontImitation;
+namespace HomefrontAI;
 
 /// <summary>Sample flags (<see cref="Sample.Flags"/>).</summary>
 [Flags]

@@ -1,13 +1,13 @@
-// HomefrontImitation shared code. HomefrontBots carries a copy (HomefrontBots\Imitation\): keep the two identical.
+// HomefrontAI shared code. HomefrontBots carries a copy (HomefrontBots\Imitation\): keep the two identical.
 // The schema string below goes into every recording and every trained policy; a bot refuses a policy whose schema
 // isn't its own, so a change here means new recordings.
 using System;
 using System.Numerics;
 
-namespace HomefrontImitation;
+namespace HomefrontAI;
 
 /// <summary>The observation a soldier acts on, as one fixed-length vector: the same function describes a recorded
-/// human (HomefrontImitation) and a bot asking the policy what to do (HomefrontBots). Everything is egocentric, in
+/// human (HomefrontAI) and a bot asking the policy what to do (HomefrontBots). Everything is egocentric, in
 /// the "frame": a flat unit vector toward the enemy being fought, or along the view when there is none. Directions
 /// in the frame are angles from its forward axis toward its right, in 45 degree steps (<see cref="Direction"/>).
 /// No SDK types: this file builds and is tested outside the game.</summary>

@@ -1,4 +1,4 @@
-# HomefrontImitation - learn bot behaviour from real players
+# HomefrontAI - learn bot behaviour from real players
 
 A [HomefrontSDK](https://github.com/TylerJaacks/HomefrontSDK) mod for the Homefront dedicated server that records
 how real players move and fight, and a trainer that turns the recordings into a model
@@ -6,7 +6,7 @@ how real players move and fight, and a trainer that turns the recordings into a 
 jump the way humans do in the same situation, prefer the routes humans walk, and hold the spots humans win from.
 
 ```
- server (HomefrontImitation)            your PC or the server (train\hfimitate.py)          server (HomefrontBots)
+ server (HomefrontAI)            your PC or the server (train\hfimitate.py)          server (HomefrontBots)
  10 Hz samples of every soldier  ──►    behaviour cloning (MLP, numpy)        ──►   policy.json   fight movement, stance
  + kills, fire, jumps (.hfrec)          per-map floor heat (48-unit cells)    ──►   <map>.heat    routes, objective spots
 ```
@@ -26,29 +26,29 @@ weapon class (rifle, SMG, LMG, sniper, other). Aiming and firing stay with the g
 
 ## Install
 
-Stop the server. From this repository's GitHub Releases put `HomefrontImitation.dll` in
-`Homefront Dedicated Server\Binaries\HomefrontSDK\Mods\HomefrontImitation\`, and a HomefrontBots build with imitation
+Stop the server. From this repository's GitHub Releases put `HomefrontAI.dll` in
+`Homefront Dedicated Server\Binaries\HomefrontSDK\Mods\HomefrontAI\`, and a HomefrontBots build with imitation
 support (`Imitation\` in its source) in its own folder. Or build from source, the repositories side by side as HomefrontBots' README
-describes, plus `HomefrontImitation\` beside them:
+describes, plus `HomefrontAI\` beside them:
 
 ```
-dotnet build HomefrontImitation\HomefrontImitation.csproj -c Release
+dotnet build HomefrontAI\HomefrontAI.csproj -c Release
 HomefrontSDK\Build.ps1 -Install          installs it with the SDK and the other mods
 ```
 
 Needs the 32-bit (x86) .NET 10 runtime on the server, like every SDK mod. The trainer needs Python 3.10+ and numpy
-(`pip install -r HomefrontImitation\train\requirements.txt`).
+(`pip install -r HomefrontAI\train\requirements.txt`).
 
 ## Use
 
 1. **Record.** Play on the server with people. Every map gets its own file in
-   `Mods\HomefrontImitation\recordings\<map>_<utc time>.hfrec`, about 200 bytes per soldier per sample (32 players:
+   `Mods\HomefrontAI\recordings\<map>_<utc time>.hfrec`, about 200 bytes per soldier per sample (32 players:
    ~200 MB an hour). Bots are recorded too, flagged, so `stats` can compare them with the humans; training leaves
    them out.
 2. **Train** (on the server machine, or copy the recordings anywhere):
    ```
-   python HomefrontImitation\train\hfimitate.py stats      what's recorded; humans vs bots: K/D, time in fights, strafing, stance
-   python HomefrontImitation\train\hfimitate.py train      -> Mods\HomefrontBots\imitation\policy.json and <map>.heat
+   python HomefrontAI\train\hfimitate.py stats      what's recorded; humans vs bots: K/D, time in fights, strafing, stance
+   python HomefrontAI\train\hfimitate.py train      -> Mods\HomefrontBots\imitation\policy.json and <map>.heat
    ```
    Both default to the folders above; give recordings and `--out` to point elsewhere, `--maps fl-farm FL-Spillway`
    to pick maps. It prints how much better than guessing the policy predicts the held-out recordings.
@@ -84,7 +84,7 @@ Bridge requests: `imitation.status` (recorder), `bots.imitation` (bots).
 
 ## Settings
 
-`Mods\HomefrontImitation\imitation.json` (written with the defaults on first start):
+`Mods\HomefrontAI\imitation.json` (written with the defaults on first start):
 
 | Key | Default | |
 |---|---|---|

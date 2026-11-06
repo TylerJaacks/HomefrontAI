@@ -6,12 +6,12 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using HomefrontSDK;
 
-namespace HomefrontImitation;
+namespace HomefrontAI;
 
-/// <summary>HomefrontImitation: records how real players move and act, ten times a second, into one file per map
-/// (Mods\HomefrontImitation\recordings\&lt;map&gt;_&lt;time&gt;.hfrec). train\hfimitate.py turns the recordings into
+/// <summary>HomefrontAI: records how real players move and act, ten times a second, into one file per map
+/// (Mods\HomefrontAI\recordings\&lt;map&gt;_&lt;time&gt;.hfrec). train\hfimitate.py turns the recordings into
 /// a policy and per-map heat maps for HomefrontBots. Chat: "!rec ...".</summary>
-[Script(Name = "HomefrontImitation", Description = "records real players' movement to train HomefrontBots (!rec in chat)")]
+[Script(Name = "HomefrontAI", Description = "records real players' movement to train HomefrontBots (!rec in chat)")]
 public sealed class Recorder : Script
 {
     /// <summary>imitation.json in the mod's folder (written with the defaults when missing).</summary>
@@ -50,7 +50,7 @@ public sealed class Recorder : Script
         LoadConfig();
         Bridge.Handle("imitation.status", _ => Status());
         // If a map is already running, the SDK calls OnMapLoaded next.
-        Log.Write($"HomefrontImitation started; recordings in {recordingsDir}; schema {Features.Schema}");
+        Log.Write($"HomefrontAI started; recordings in {recordingsDir}; schema {Features.Schema}");
     }
 
     void LoadConfig()

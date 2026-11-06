@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""HomefrontImitation trainer: recordings of real players -> a policy and heat maps for HomefrontBots.
+"""HomefrontAI trainer: recordings of real players -> a policy and heat maps for HomefrontBots.
 
     python hfimitate.py stats  [recordings...]               what's been recorded, humans vs bots
     python hfimitate.py train  [recordings...] [--out DIR]   train policy.json and <map>.heat into DIR
 
-Defaults (run from HomefrontImitation\\train, the repositories beside the dedicated server as Build.ps1 expects):
-recordings from  Homefront Dedicated Server\\Binaries\\HomefrontSDK\\Mods\\HomefrontImitation\\recordings
+Defaults (run from HomefrontAI\\train, the repositories beside the dedicated server as Build.ps1 expects):
+recordings from  Homefront Dedicated Server\\Binaries\\HomefrontSDK\\Mods\\HomefrontAI\\recordings
 output to        Homefront Dedicated Server\\Binaries\\HomefrontSDK\\Mods\\HomefrontBots\\imitation
 Then "!bots imitation reload" in game (or the next map) picks it up. Needs Python 3.10+ and numpy only.
 
@@ -33,9 +33,9 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import hfrec  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-PROJECT = os.path.dirname(os.path.dirname(HERE))   # beside HomefrontImitation: HomefrontSDK, HomefrontBots, the server
+PROJECT = os.path.dirname(os.path.dirname(HERE))   # beside HomefrontAI: HomefrontSDK, HomefrontBots, the server
 MODS = os.path.join(PROJECT, "Homefront Dedicated Server", "Binaries", "HomefrontSDK", "Mods")
-DEFAULT_IN = os.path.join(MODS, "HomefrontImitation", "recordings")
+DEFAULT_IN = os.path.join(MODS, "HomefrontAI", "recordings")
 DEFAULT_OUT = os.path.join(MODS, "HomefrontBots", "imitation")
 
 SPACING = 48.0        # Nav.cs grid

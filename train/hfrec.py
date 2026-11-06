@@ -1,4 +1,4 @@
-"""Reads HomefrontImitation recordings (.hfrec, written by Recording/RecordingWriter.cs).
+"""Reads HomefrontAI recordings (.hfrec, written by Recording/RecordingWriter.cs).
 
     rec = hfrec.read("fl-farm_20261106_201500.hfrec")
     rec.samples["loc"], rec.samples["feat"], rec.kills, rec.strings, rec.soldiers
@@ -71,7 +71,7 @@ def read(path: str) -> Recording:
         raise FormatError(f"{path}: too short")
     magic, version, fver, fcount, sample_s, start = struct.unpack_from("<IHHHfq", data, 0)
     if magic != MAGIC:
-        raise FormatError(f"{path}: not a HomefrontImitation recording")
+        raise FormatError(f"{path}: not a HomefrontAI recording")
     if version != FORMAT_VERSION:
         raise FormatError(f"{path}: format version {version}, this reader knows {FORMAT_VERSION}")
     pos = 22

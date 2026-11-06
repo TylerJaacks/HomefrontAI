@@ -1,11 +1,11 @@
-// HomefrontImitation shared code. HomefrontBots carries a copy (HomefrontBots\Imitation\): keep the two identical.
+// HomefrontAI shared code. HomefrontBots carries a copy (HomefrontBots\Imitation\): keep the two identical.
 // The game-side half of Features: reads a soldier, its enemies and its surroundings out of the running game.
 using System;
 using System.Collections.Generic;
 using System.Numerics;
 using HomefrontSDK;
 
-namespace HomefrontImitation;
+namespace HomefrontAI;
 
 /// <summary>Builds <see cref="Features.Context"/> for soldiers in the game, the same way for a recorded human and for
 /// a bot: who is in sight (eye to eye, world geometry only), how many allies and enemies are near, how much room
