@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Tests the game-independent half outside the game: writes scripted recordings with the real RecordingWriter
+       and Features, and checks a trained policy.json against the trainer's own forward pass (tests/e2e.py). -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\Shared\Features.cs" Link="Shared\Features.cs" />
+    <Compile Include="..\..\Shared\Policy.cs" Link="Shared\Policy.cs" />
+    <Compile Include="..\..\Recording\RecordingWriter.cs" Link="Recording\RecordingWriter.cs" />
+  </ItemGroup>
+
+</Project>

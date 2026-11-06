@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- HomefrontImitation: records real players for training HomefrontBots, a HomefrontSDK mod. Installed as
+       Homefront Dedicated Server\Binaries\HomefrontSDK\Mods\HomefrontImitation\HomefrontImitation.dll. -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <PlatformTarget>x86</PlatformTarget>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Version>0.1.0</Version>
+  </PropertyGroup>
+
+  <!-- The tests build the shared code on their own. -->
+  <ItemGroup>
+    <Compile Remove="tests\**" />
+    <None Remove="tests\**" />
+  </ItemGroup>
+
+  <!-- The SDK: the HomefrontSDK checkout beside this one when there is one, else (CI) the latest stable package from
+       GitHub Packages (see nuget.config). -p:UseLocalSdk=false forces the package, -p:HomefrontSDKVersion=1.0.0 pins
+       it. Either way the game already has the SDK loaded: reference it, don't copy it. -->
+  <PropertyGroup>
+    <UseLocalSdk Condition="'$(UseLocalSdk)' == '' and Exists('..\HomefrontSDK\SDK\HomefrontSDK.csproj')">true</UseLocalSdk>
+    <HomefrontSDKVersion Condition="'$(HomefrontSDKVersion)' == ''">*</HomefrontSDKVersion>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(UseLocalSdk)' != 'true'">
+    <PackageReference Include="HomefrontSDK" Version="$(HomefrontSDKVersion)" ExcludeAssets="runtime" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(UseLocalSdk)' == 'true'">
+    <ProjectReference Include="..\HomefrontSDK\SDK\HomefrontSDK.csproj" Private="false" />
+  </ItemGroup>
+
+</Project>

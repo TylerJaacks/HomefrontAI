@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="HomefrontImitation.csproj" />
+  <Project Path="tests/Harness/Harness.csproj" />
+</Solution>

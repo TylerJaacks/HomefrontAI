@@ -1,0 +1,62 @@
+# Builds HomefrontImitation against the latest HomefrontSDK package from GitHub Packages and runs the end-to-end
+# test outside the game (scripted recordings -> trainer -> policy checked in C#). A v* tag (v0.2.0) builds with that
+# version and makes a GitHub Release with HomefrontImitation.dll, .pdb and the trainer.
+name: Build
+
+on:
+  push:
+    branches: [ "main" ]
+    tags: [ "v*" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  packages: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # read by nuget.config for the GitHub Packages feed
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 10.0.x
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - name: Version from tag
+      if: github.ref_type == 'tag'
+      run: "\"VERSION_ARG=-p:Version=$($env:GITHUB_REF_NAME.TrimStart('v'))\" >> $env:GITHUB_ENV"
+    - name: Build
+      run: dotnet build HomefrontImitation.csproj -c Release -nologo $env:VERSION_ARG
+    - name: Test
+      run: |
+        pip install -r train/requirements.txt
+        python tests/e2e.py
+    - name: Zip the trainer
+      run: Compress-Archive train/*.py, train/requirements.txt HomefrontImitation-trainer.zip
+    - name: Upload
+      uses: actions/upload-artifact@v4
+      with:
+        name: HomefrontImitation
+        path: |
+          bin/Release/net10.0/HomefrontImitation.dll
+          bin/Release/net10.0/HomefrontImitation.pdb
+          HomefrontImitation-trainer.zip
+    - name: GitHub Release
+      if: github.ref_type == 'tag'
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        $sdk = (dotnet list HomefrontImitation.csproj package --format json | ConvertFrom-Json).projects[0].frameworks[0].topLevelPackages |
+          Where-Object id -eq HomefrontSDK | ForEach-Object resolvedVersion
+        $notes = "Needs [HomefrontSDK v$sdk](https://github.com/${{ github.repository_owner }}/HomefrontSDK/releases/tag/v$sdk) and HomefrontModLoader. " +
+                 "Install as ``Homefront Dedicated Server\Binaries\HomefrontSDK\Mods\HomefrontImitation\HomefrontImitation.dll``."
+        gh release create $env:GITHUB_REF_NAME bin/Release/net10.0/HomefrontImitation.dll bin/Release/net10.0/HomefrontImitation.pdb HomefrontImitation-trainer.zip `
+          --title "HomefrontImitation $env:GITHUB_REF_NAME" --notes $notes --generate-notes
